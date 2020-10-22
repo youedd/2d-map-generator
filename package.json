@@ -1,0 +1,29 @@
+{
+  "name": "2d-map-generator",
+  "version": "1.0.0",
+  "description": "",
+  "scripts": {
+    "start": "npx parcel ./src/index.html",
+    "lint" : "npx tsc -noEmit",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/youedd/2d-map-generator.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/youedd/2d-map-generator/issues"
+  },
+  "homepage": "https://github.com/youedd/2d-map-generator#readme",
+  "devDependencies": {
+    "@types/p5": "^0.9.1",
+    "parcel-bundler": "^1.12.4",
+    "typescript": "^4.0.3"
+  },
+  "dependencies": {
+    "p5": "^1.1.9"
+  }
+}

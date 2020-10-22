@@ -3,8 +3,8 @@
   "version": "1.0.0",
   "description": "",
   "scripts": {
-    "start": "npx parcel ./src/index.html",
-    "lint" : "npx tsc -noEmit",
+    "start": "npx parcel ./src/index.html ./src/assets/**/*",
+    "lint": "npx tsc -noEmit",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
@@ -20,7 +20,10 @@
   "homepage": "https://github.com/youedd/2d-map-generator#readme",
   "devDependencies": {
     "@types/p5": "^0.9.1",
+    "glslify-bundle": "^5.1.1",
+    "glslify-deps": "^1.3.1",
     "parcel-bundler": "^1.12.4",
+    "parcel-plugin-static-files-copy": "^2.5.0",
     "typescript": "^4.0.3"
   },
   "dependencies": {

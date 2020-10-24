@@ -44,8 +44,15 @@ float cnoise(vec2 P){
 
 const int MAX_OCTAVES = 10;
 
-uniform float scale;
+uniform float freq;
 uniform vec2 offset;
+uniform vec2 u_resolution;
+uniform float exp;
+
+
+// float freq = 0.004;
+vec2 center = u_resolution * 0.5;
+float radius = min(center.x, center.y) ;
 
 vec3 ocean = vec3(0.,0.553,0.769);
 vec3 shore = vec3(0.,0.663,0.8);
@@ -54,7 +61,7 @@ vec3 grass = vec3(0.494,0.784,0.314);
 vec3 stone = vec3(0.4745, 0.4196, 0.3725);
 vec3 snow = vec3(1.,0.98,0.98);
 
-float noise(int octaves, float persistence, float freq, vec2 coords) {
+float noise(int octaves, float persistence, float freq, vec2 coords, vec2 offset) {
 
   float amp= 1.; 
   float maxamp = 0.;
@@ -63,7 +70,7 @@ float noise(int octaves, float persistence, float freq, vec2 coords) {
 
   for (int i=0; i < MAX_OCTAVES; ++i) {
     if(i == octaves) break;
-    sum += amp * cnoise(coords*freq); 
+    sum += amp * cnoise(offset + coords*freq); 
     freq *= 2.1;
     maxamp += amp;
     amp *= persistence;
@@ -72,26 +79,34 @@ float noise(int octaves, float persistence, float freq, vec2 coords) {
   return sum / maxamp;
 }
 
-vec3 getColor(vec2 position){
-  float h =  noise(6, 0.6, 1./scale,position + offset);
+vec3 getColor(vec2 position) {
 
-    if (h < -0.1) {
-      return ocean;
-    } else if (h < -0.05) {
-      return shore;
-    } else if (h < 0.) {
-      return sand;
-    } else if (h < 0.20) {
-      return grass;
-    } else if (h < 0.35) {
-      return stone;
-    } else {
-      return snow;
-    }
+  float distance = length(position) / radius;
+
+  if(distance >= 1.0)  {
+    return ocean;
+  }
+
+  float filter = pow((1.0 - distance), exp);
+  float h =  filter * ( 1.0 + noise(7, 0.6,freq, position, offset)) - 1.0;
+
+  if (h < -0.1) {
+    return ocean;
+  } else if (h < -0.05) {
+    return shore;
+  } else if (h < 0.) {
+    return sand;
+  } else if (h < 0.20) {
+    return grass;
+  } else if (h < 0.35) {
+    return stone;
+  } else {
+    return snow;
+  }
 }
 
 void main(){
-  vec2 position = gl_FragCoord.xy;
+  vec2 position = gl_FragCoord.xy  - center;
 
   gl_FragColor = vec4(getColor(position),1);
 }

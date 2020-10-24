@@ -4,6 +4,7 @@ new p5((sketch: p5) => {
   let shader: p5.Shader;
   let freq = 0.001;
   let exp = 0.1;
+  let radius = Math.min(sketch.windowHeight, sketch.windowWidth) - 40;
   const offset = [0, 0];
 
   sketch.preload = () => {
@@ -25,6 +26,7 @@ new p5((sketch: p5) => {
     shader.setUniform("freq", freq);
     shader.setUniform("exp", exp);
     shader.setUniform("offset", offset);
+    shader.setUniform("radius", radius);
     sketch.quad(-1, -1, 1, -1, 1, 1, -1, 1);
   };
 

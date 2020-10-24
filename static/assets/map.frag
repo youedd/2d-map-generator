@@ -42,24 +42,24 @@ float cnoise(vec2 P){
 }
 // Perlin 2D Noise - End
 
-const int MAX_OCTAVES = 10;
-
-uniform float freq;
-uniform vec2 offset;
+// PARAMS
 uniform vec2 u_resolution;
+uniform float radius;
+uniform vec2 offset;
+uniform float freq;
 uniform float exp;
 
-
-// float freq = 0.004;
-vec2 center = u_resolution * 0.5;
-float radius = min(center.x, center.y) ;
-
+// COLORS 
+vec3 space = vec3(0.0039, 0.0863, 0.1216);
 vec3 ocean = vec3(0.,0.553,0.769);
 vec3 shore = vec3(0.,0.663,0.8);
 vec3 sand = vec3(0.933,0.804,0.639);
 vec3 grass = vec3(0.494,0.784,0.314);
 vec3 stone = vec3(0.4745, 0.4196, 0.3725);
 vec3 snow = vec3(1.,0.98,0.98);
+
+const int MAX_OCTAVES = 10;
+vec2 center = u_resolution * 0.5;
 
 float noise(int octaves, float persistence, float freq, vec2 coords, vec2 offset) {
 
@@ -84,7 +84,7 @@ vec3 getColor(vec2 position) {
   float distance = length(position) / radius;
 
   if(distance >= 1.0)  {
-    return ocean;
+    return space;
   }
 
   float filter = pow((1.0 - distance), exp);

@@ -2,10 +2,16 @@ import p5 from "p5";
 
 new p5((sketch: p5) => {
   let shader: p5.Shader;
+
+  // NOISE PARAMS
+  let octaves = 7;
   let freq = 0.001;
+  let persistence = 0.6;
+  const offset = [0, 0];
+
+  // FILTER PARAMS
   let exp = 0.1;
   let radius = Math.min(sketch.windowHeight, sketch.windowWidth) - 40;
-  const offset = [0, 0];
 
   sketch.preload = () => {
     shader = sketch.loadShader("assets/map.vert", "assets/map.frag");
@@ -23,10 +29,15 @@ new p5((sketch: p5) => {
 
   sketch.draw = () => {
     shader.setUniform("u_resolution", [2 * sketch.width, 2 * sketch.height]);
-    shader.setUniform("freq", freq);
+   
     shader.setUniform("exp", exp);
-    shader.setUniform("offset", offset);
     shader.setUniform("radius", radius);
+
+    shader.setUniform("octaves", octaves);
+    shader.setUniform("freq", freq);
+    shader.setUniform("persistence", persistence);
+    shader.setUniform("offset", offset);
+   
     sketch.quad(-1, -1, 1, -1, 1, 1, -1, 1);
   };
 

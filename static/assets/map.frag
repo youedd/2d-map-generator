@@ -44,10 +44,16 @@ float cnoise(vec2 P){
 
 // PARAMS
 uniform vec2 u_resolution;
+
+// FILTER PARAMS
 uniform float radius;
-uniform vec2 offset;
-uniform float freq;
 uniform float exp;
+
+// NOISE PARAMS
+uniform int octaves;
+uniform float freq;
+uniform float persistence;
+uniform vec2 offset;
 
 // COLORS 
 vec3 space = vec3(0.0039, 0.0863, 0.1216);
@@ -88,7 +94,7 @@ vec3 getColor(vec2 position) {
   }
 
   float filter = pow((1.0 - distance), exp);
-  float h =  filter * ( 1.0 + noise(7, 0.6,freq, position, offset)) - 1.0;
+  float h =  filter * ( 1.0 + noise(octaves, persistence, freq, position, offset)) - 1.0;
 
   if (h < -0.1) {
     return ocean;

@@ -30,9 +30,9 @@ new p5((sketch: p5) => {
     sketch.quad(-1, -1, 1, -1, 1, 1, -1, 1);
   };
 
-  sketch.mouseWheel = ({ delta }: { delta: number }) => {
+  sketch.mouseWheel = ({ deltaY }: { deltaY: number }) => {
     let dt = 0.01;
-    exp += delta > 0 ? dt : -dt;
+    exp += deltaY > 0 ? dt : -dt;
     exp = sketch.constrain(exp, 0, 5);
     sketch.draw();
   };

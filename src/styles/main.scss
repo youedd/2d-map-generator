@@ -1,0 +1,100 @@
+$PREFIXES: -webkit-, -moz-, -ms-, -o-, "";
+
+@mixin prefix-template($var, $value, $prefixes: $PREFIXES) {
+  @each $pre in $prefixes {
+    #{$pre + $var}: #{$value};
+  }
+}
+
+@mixin user-select($value) {
+  @include prefix-template(user-select, #{$value});
+}
+
+// @mixin animation($value) {
+//   @include prefix-template(animation, #{$value});
+// }
+
+* {
+  margin: 0;
+  padding: 0;
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+main {
+  display: flex;
+}
+
+.settings {
+  margin: 15px;
+  padding: 10px;
+
+  border-radius: 5px;
+  background-color: #ffffffb0;
+
+  position: absolute;
+  top: 0;
+  right: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+
+  color: #303030;
+}
+
+#close {
+  @include user-select(none);
+}
+
+#panel {
+  display: none;
+}
+
+#panel.opened {
+  padding: 10px;
+  display: flex;
+  flex-direction: column;
+
+  #close {
+    font-size: 24px;
+    padding: 10px;
+    position: absolute;
+    top: 0;
+    right: 10px;
+  }
+
+  input {
+    padding: 5px;
+    border: none;
+    border-radius: 5px;
+  }
+
+  .block {
+    &:not(:last-child) {
+      margin-bottom: 15px;
+      padding-bottom: 15px;
+      border-bottom: 1px solid #7e7e7e8f;
+    }
+
+    & > label {
+      display: block;
+      font-size: 14px;
+      margin-bottom: 10px;
+      text-transform: capitalize;
+    }
+
+    .param {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+
+      &:not(:last-child) {
+        margin-bottom: 5px;
+      }
+
+      label {
+        width: 100px;
+        font-size: 14px;
+      }
+    }
+  }
+}

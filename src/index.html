@@ -4,18 +4,13 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>2D map generator</title>
-    <style>
-      * {
-        margin: 0;
-        padding: 0;
-      }
-      main {
-        display: flex;
-      }
-    </style>
+    <link rel="stylesheet" href="styles/main.scss" />
   </head>
   <body>
+    <div class="settings">
+      <span id="close">🛠</span>
+      <div id="panel" class="opened"></div>
+    </div>
     <script src="./scripts/main.ts"></script>
-    <div id="panel"></div>
   </body>
 </html>

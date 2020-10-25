@@ -24,42 +24,15 @@ new p5((sketch: p5) => {
   const offset_dt = 0.01;
   const radius_dt = 10;
 
-  // Helpers
-  const initElement = (element: Element) => {
-    element.input(handleParamsChange);
-    if (panel) {
-      element.parent(panel);
-    }
-  };
-
-  const createInput = (value: number, step: number) => {
-    const element = sketch.createInput(String(value), "number") as Element;
-    const elt = element.elt as HTMLInputElement;
-    elt.setAttribute("step", String(step));
-    initElement(element);
-    return element;
-  };
-
-  const createSlider = (...args: Parameters<typeof sketch.createSlider>) => {
-    const element = sketch.createSlider(...args) as Element;
-    initElement(element);
-    return element;
-  };
-
-  const handleParamsChange = () => {
-    sketch.draw();
-  };
-
   // PANEL
-  const panel = sketch.select("#panel");
-  const octaves_slider = createSlider(1, 10, octaves, 1);
-  const freq_input = createInput(freq, freq_dt);
-  const persistence_input = createInput(persistence, persistence_dt);
-  const offset_x_input = createInput(offset[0], offset_dt);
-  const offset_y_input = createInput(offset[1], offset_dt);
-
-  const exp_input = createInput(exp, exp_dt);
-  const radius_input = createInput(radius, radius_dt);
+  let panel: p5.Element | null;
+  let octaves_slider: Element;
+  let freq_input: Element;
+  let persistence_input: Element;
+  let offset_x_input: Element;
+  let offset_y_input: Element;
+  let exp_input: Element;
+  let radius_input: Element;
 
   sketch.preload = () => {
     shader = sketch.loadShader("assets/map.vert", "assets/map.frag");
@@ -69,6 +42,33 @@ new p5((sketch: p5) => {
     sketch.createCanvas(sketch.windowWidth, sketch.windowHeight, "webgl");
     sketch.shader(shader);
     sketch.noLoop();
+
+    panel = sketch.select("#panel");
+
+    if (!panel) {
+      throw "Panel element not found";
+    }
+
+    const closeButton = sketch.select("#close");
+    closeButton?.mouseClicked(() => {
+      panel?.toggleClass("opened");
+    });
+
+    const noiseBlock = createBlock(panel, "noise :");
+    octaves_slider = createSlider("octaves", noiseBlock, 1, 10, octaves, 1);
+    freq_input = createInput("frequence", noiseBlock, freq, freq_dt);
+    persistence_input = createInput(
+      "persistence",
+      noiseBlock,
+      persistence,
+      persistence_dt
+    );
+    offset_x_input = createInput("x offset", noiseBlock, offset[0], offset_dt);
+    offset_y_input = createInput("y offset", noiseBlock, offset[1], offset_dt);
+
+    const filterBlock = createBlock(panel, "filter :");
+    exp_input = createInput("exponent", filterBlock, exp, exp_dt);
+    radius_input = createInput("radius", filterBlock, radius, radius_dt);
   };
 
   sketch.windowResized = () => {
@@ -92,27 +92,77 @@ new p5((sketch: p5) => {
     sketch.quad(-1, -1, 1, -1, 1, 1, -1, 1);
   };
 
-  // sketch.mouseWheel = ({ deltaY }: { deltaY: number }) => {
-  //   exp += deltaY > 0 ? exp_dt : -exp_dt;
-  //   exp = sketch.constrain(exp, 0, 5);
-  //   sketch.draw();
-  // };
+  // Dom Helpers
+  const createBlock = (parent: p5.Element, title: string) => {
+    const container = sketch.createDiv();
+    container.addClass("block");
 
-  // document.onkeydown = () => {
-  //   switch (sketch.keyCode) {
-  //     case sketch.LEFT_ARROW:
-  //       offset[0] += offset_dt;
-  //       break;
-  //     case sketch.RIGHT_ARROW:
-  //       offset[0] -= offset_dt;
-  //       break;
-  //     case sketch.UP_ARROW:
-  //       offset[1] -= offset_dt;
-  //       break;
-  //     case sketch.DOWN_ARROW:
-  //       offset[1] += offset_dt;
-  //       break;
-  //   }
-  //   sketch.draw();
-  // };
+    const label = sketch.createElement("label");
+    label.html(title);
+
+    label.parent(container);
+    container.parent(parent);
+
+    return container;
+  };
+
+  const createInput = (
+    title: string,
+    parent: p5.Element,
+    value: number,
+    step: number
+  ) => {
+    const container = sketch.createDiv();
+    container.addClass("param");
+
+    const label = sketch.createElement("label");
+    label.html(title);
+
+    const element = sketch.createInput(String(value), "number") as Element;
+    const elt = element.elt as HTMLInputElement;
+    elt.setAttribute("step", String(step));
+
+    label.parent(container);
+    element.parent(container);
+
+    element.input(() => {
+      sketch.draw();
+    });
+
+    container.parent(parent);
+
+    return element;
+  };
+
+  const createSlider = (
+    title: string,
+    parent: p5.Element,
+    min: number,
+    max: number,
+    value: number,
+    step: number
+  ) => {
+    const container = sketch.createDiv();
+    container.addClass("param");
+
+    const label = sketch.createElement("label");
+    label.html(title);
+
+    const span = sketch.createSpan();
+    span.html(String(value));
+
+    const element = sketch.createSlider(min, max, value, step) as Element;
+    element.input(() => {
+      sketch.draw();
+      span.html(String(element.value()));
+    });
+
+    label.parent(container);
+    element.parent(container);
+    span.parent(container);
+
+    container.parent(parent);
+
+    return element;
+  };
 });

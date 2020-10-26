@@ -13,7 +13,7 @@ to start dev server on localhost:1234
 yarn start 
 ```
 
-### demo 
+### Demo 
 
 https://youedd.github.io/2d-map-generator/
 

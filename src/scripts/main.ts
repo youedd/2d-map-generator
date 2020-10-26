@@ -15,7 +15,7 @@ new p5((sketch: p5) => {
 
   // INITIAL FILTER PARAMS
   const exp = 0.1;
-  const radius = Math.min(sketch.windowHeight, sketch.windowWidth) - 40;
+  const radius = 0.5 * Math.min(sketch.windowHeight, sketch.windowWidth) - 40;
 
   // Steps
   const exp_dt = 0.01;
@@ -39,6 +39,7 @@ new p5((sketch: p5) => {
   };
 
   sketch.setup = () => {
+    sketch.pixelDensity(1);
     sketch.createCanvas(sketch.windowWidth, sketch.windowHeight, "webgl");
     sketch.shader(shader);
     sketch.noLoop();
@@ -76,7 +77,7 @@ new p5((sketch: p5) => {
   };
 
   sketch.draw = () => {
-    shader.setUniform("u_resolution", [2 * sketch.width, 2 * sketch.height]);
+    shader.setUniform("u_resolution", [sketch.width, sketch.height]);
 
     shader.setUniform("exp", Number(exp_input.value()));
     shader.setUniform("radius", Number(radius_input.value()));

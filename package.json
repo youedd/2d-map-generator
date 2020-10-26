@@ -4,7 +4,7 @@
   "description": "",
   "scripts": {
     "start": "npx parcel ./src/index.html ./src/assets/**/* -d build",
-    "build": "npx parcel build ./src/index.html ./src/assets/**/*",
+    "build": "npx parcel build ./src/index.html ./src/assets/**/* --public-url ./",
     "lint": "npx tsc -noEmit",
     "test": "echo \"Error: no test specified\" && exit 1"
   },

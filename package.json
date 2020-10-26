@@ -3,8 +3,8 @@
   "version": "1.0.0",
   "description": "",
   "scripts": {
-    "start": "npx parcel ./src/index.html ./src/assets/**/* -d build",
-    "build": "npx parcel build ./src/index.html ./src/assets/**/* --public-url ./",
+    "start": "npx parcel ./src/index.html ./src/assets/**/*",
+    "build": "npx parcel build ./src/index.html ./src/assets/**/* --public-url ./ -d docs",
     "lint": "npx tsc -noEmit",
     "test": "echo \"Error: no test specified\" && exit 1"
   },

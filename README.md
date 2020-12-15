@@ -1,5 +1,5 @@
 # 2d-map-generator
-map generation using two dimensions perlin noise.
+Map generation using two dimensions perlin noise.
 
 
 ### Demo 

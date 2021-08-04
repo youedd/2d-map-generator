@@ -4,7 +4,7 @@ Map generation using two dimensions perlin noise.
 
 ### Demo 
 ![Earth demo](demo.gif)
-https://www.eddibili.com/2d-map-generator
+https://youedd.github.io/2d-map-generator
 
 ### Installation 
 
